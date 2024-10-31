@@ -1,6 +1,6 @@
 {
     "JPKG_minimum_version": 2,
-    "package_name": "espnowutils",
+    "package_name": "espnowtools",
     "version": [1, 0, 0],
     "dependencies": [],
     "conflicts": [],
