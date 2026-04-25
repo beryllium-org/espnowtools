@@ -33,14 +33,19 @@ elif "init" == vr("opts")["w"][0]:
                 self._in_buf = None
 
             def _rr(self) -> None:
-                pak = self._espn.read()
-                while pak is not None:
-                    if pak[0] in [peer.mac for peer in self._espn.peers]:
-                        if self._in_buf is None:
-                            self._in_buf = pak[1]
-                        else:
-                            self._in_buf += pak[1]
+                try:
                     pak = self._espn.read()
+                    while pak is not None:
+                        if pak[0] in [peer.mac for peer in self._espn.peers]:
+                            if self._in_buf is None:
+                                self._in_buf = pak[1]
+                            else:
+                                self._in_buf += pak[1]
+                        pak = self._espn.read()
+                except ValueError:
+                    self._rr()
+                except:
+                    return
 
             @property
             def in_waiting(self) -> int:
@@ -67,7 +72,10 @@ elif "init" == vr("opts")["w"][0]:
                 return res
 
             def write(self, data: bytes) -> int:
-                self._espn.send(data)
+                try:
+                    self._espn.send(data)
+                except:
+                    pass
                 return len(data)
 
             def deinit(self) -> None:
