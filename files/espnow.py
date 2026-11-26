@@ -20,8 +20,10 @@ elif "init" == vr("opts")["w"][0]:
     else:
         import espnow
 
-        be.based.run("mknod ESPNow")
-        vr("node", be.api.getvar("return"))
+        be.api.setvar("argj", "mknod ESPNow")
+        be.api.subscript("/bin/mknod.py")
+        vr("node", be.api.getvar("out"))
+        be.api.setvar("out", None)
         be.api.subscript("/bin/stringproccessing/devid.py")
         be.devices["ESPNow"][0] = espnow.ESPNow()
         del espnow
